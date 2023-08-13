@@ -11,11 +11,8 @@
         "ecmaVersion": "latest"
     },
     "rules": {
-        "eol-last" :"off",
-        "no-console": "off",
-        "linebreak-style":"off",
-        "indent":"off",
-        "arrow-spacing":"off",
-        "key-spacing":"off"
+        "linebreak-style": "off",
+        "no-underscore-dangle":"off",
+        "no-console":"off"
     }
 }

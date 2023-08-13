@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 require('dotenv').config();
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
@@ -75,13 +74,6 @@ const init = async () => {
       },
     },
   ]);
-  // await server.register({
-  //   plugin: notes,
-  //   options: {
-  //     service: notesService,
-  //     validator: NotesValidator,
-  //   },
-  // });
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks response dari request
     const { response } = request;
