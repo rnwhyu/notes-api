@@ -20,6 +20,10 @@ const collaborations = require('./api/collaborations');
 const CollaborationsService = require('./services/postgres/CollaborationsService');
 const CollaborationsValidator = require('./validator/collaborations');
 
+const _exports = require('./api/exports');
+const ProducerService = require('./services/rabbitmq/ProducerService');
+const ExportsValidator = require('./validator/exports');
+
 const init = async () => {
   const collaborationsService = new CollaborationsService();
   const notesService = new NotesService(collaborationsService);
@@ -87,6 +91,13 @@ const init = async () => {
         validator: CollaborationsValidator,
       },
     },
+    {
+      plugin: _exports,
+      options: {
+        service: ProducerService,
+        validator: ExportsValidator,
+      },
+    },
   ]);
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks response dari request
@@ -107,6 +118,15 @@ const init = async () => {
         status: 'error',
         message: 'terjadi kegagalan pada server kami',
       });
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('ERROR LOG', {
+          request: {
+            route: request.route,
+            payload: request.payload,
+          },
+          response,
+        });
+      }
       newResponse.code(500);
       return newResponse;
     }
